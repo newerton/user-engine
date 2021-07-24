@@ -35,3 +35,6 @@ lerna-debug.log*
 
 # Plugins - VSCode
 /.history
+
+# Env
+.env

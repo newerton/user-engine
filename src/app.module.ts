@@ -1,42 +1,49 @@
 import { Module } from '@nestjs/common';
 import { APP_FILTER } from '@nestjs/core';
-import { MongooseModule } from '@nestjs/mongoose';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { ExceptionFilter } from './filters/rpc-exception.filter';
-import { User, UserSchema } from './schemas/user.schema';
-import { MongoExceptionFilter } from './filters/mongo-exception.filter';
-import { ValidationExceptionFilter } from './filters/validation-exception.filter';
 import { JoiValidationExceptionFilter } from './filters/joi.validation-exception.filter';
-import { TypeErrorExceptionFilter } from './filters/typerror-exception.filter';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import configuration from './config/configuration';
+import { AppExceptionFilter } from './filters/app-exception.filter';
+import { KeycloakConnectModule } from 'nest-keycloak-connect';
+import { HttpModule } from '@nestjs/axios';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 
 @Module({
   imports: [
-    MongooseModule.forRoot('mongodb://localhost/users', {
-      useCreateIndex: true,
-      useFindAndModify: false,
-      useNewUrlParser: true,
+    HttpModule,
+    ConfigModule.forRoot({
+      isGlobal: true,
+      load: [configuration],
     }),
-    MongooseModule.forFeature([{ name: User.name, schema: UserSchema }]),
+    ClientsModule.register([
+      {
+        name: 'AUTH_SERVICE',
+        transport: Transport.TCP,
+        options: {
+          host: 'localhost',
+          port: 3001,
+        },
+      },
+    ]),
+    KeycloakConnectModule.registerAsync({
+      inject: [ConfigService],
+      useFactory: (config: ConfigService) => ({
+        debug: config.get<string>('keycloak.debug'),
+        authServerUrl: config.get<string>('keycloak.baseUrl'),
+        realm: config.get<string>('keycloak.realm') as string,
+        clientId: config.get<string>('keycloak.clientId'),
+        secret: config.get<string>('keycloak.secret') as string,
+      }),
+    }),
   ],
   controllers: [AppController],
   providers: [
     AppService,
     {
       provide: APP_FILTER,
-      useClass: ExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: MongoExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: ValidationExceptionFilter,
-    },
-    {
-      provide: APP_FILTER,
-      useClass: TypeErrorExceptionFilter,
+      useClass: AppExceptionFilter,
     },
     {
       provide: APP_FILTER,
