@@ -13,6 +13,8 @@ import { ForgoPasswordDto } from './dtos/forgot-password.dto';
 import { MessageResponse } from './types/messageResponse.types';
 import { PasswordsSchema } from './validations/passwords.schema.validation';
 import { ChangePasswordDto } from './dtos/change-password.dto';
+import { SearchUserDto } from './dtos/search-user.dto';
+import { UserSearchSchema } from './validations/user.search.schema.validation';
 
 @Controller()
 export class AppController {
@@ -60,5 +62,18 @@ export class AppController {
     payload: ForgoPasswordDto,
   ): Promise<MessageResponse> {
     return this.appService.forgotPassword(payload);
+  }
+
+  @MessagePattern('users.find_one')
+  findOne(
+    @Payload(new JoiValidationPipe(new UserSearchSchema()))
+    payload: SearchUserDto,
+  ): Promise<User> {
+    return this.appService.findOne(payload);
+  }
+
+  @MessagePattern('users.find_by_id')
+  findById(payload: { id: string }): Promise<User> {
+    return this.appService.findById(payload);
   }
 }

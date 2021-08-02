@@ -19,6 +19,8 @@ import { decode, JwtPayload, verify } from 'jsonwebtoken';
 import { ForgoPasswordDto } from './dtos/forgot-password.dto';
 import { MessageResponse } from './types/messageResponse.types';
 import { ChangePasswordDto } from './dtos/change-password.dto';
+import { SearchUserDto } from './dtos/search-user.dto';
+import { kStringMaxLength } from 'buffer';
 
 @Injectable()
 export class AppService {
@@ -74,9 +76,8 @@ export class AppService {
         this.httpService.post(this.url, payload, this.options),
       )
         .then(async (res) => {
-          const users = await this.getUser(email);
-          if (users && users.length > 0) {
-            const user = users[0];
+          const user = await this.getUser({ email });
+          if (user) {
             await this.setPassword(user.id, passwordCurrent);
             this.sendCredentialReset(user.id, [
               'terms_and_conditions',
@@ -100,7 +101,7 @@ export class AppService {
     userDto: CreateUserDto,
     headers: Headers,
   ): Promise<AxiosResponse<User>> {
-    const { firstName, lastName, email } = userDto;
+    const { firstName, lastName, email, attributes } = userDto;
 
     const { sub } = await this.getAccessTokenInfo(headers);
 
@@ -116,6 +117,10 @@ export class AppService {
 
     if (email) {
       payload.email = email;
+    }
+
+    if (attributes) {
+      payload.attributes = attributes;
     }
 
     const { access_token } = await lastValueFrom(this.credentials());
@@ -168,9 +173,8 @@ export class AppService {
 
     if (access_token) {
       this.options.headers.authorization = `Bearer ${access_token}`;
-      const users = await this.getUser(email);
-      if (users && users.length > 0) {
-        const user = users[0];
+      const user = await this.getUser({ email });
+      if (user) {
         this.sendCredentialReset(user.id, [
           'terms_and_conditions',
           'UPDATE_PASSWORD',
@@ -185,11 +189,67 @@ export class AppService {
     throw new BadRequestException({ error: 'No access token' });
   }
 
-  async getUser(email: string): Promise<User[]> {
-    const url = `${this.url}?email=${email}`;
-    return await lastValueFrom(this.httpService.get(url, this.options))
+  async findById({ id }: { id: string }): Promise<User> {
+    const { access_token } = await lastValueFrom(this.credentials());
+    if (access_token) {
+      this.options.headers.authorization = `Bearer ${access_token}`;
+      const url = `${this.url}/${id}`;
+      return await lastValueFrom(this.httpService.get(url, this.options))
+        .then(async (res) => res.data)
+        .catch((e) => {
+          this.error(e);
+        });
+    }
+    throw new BadRequestException({ error: 'No access token' });
+  }
+
+  async findOne({ firstName, lastName, email }: SearchUserDto): Promise<User> {
+    const { access_token } = await lastValueFrom(this.credentials());
+    if (access_token) {
+      this.options.headers.authorization = `Bearer ${access_token}`;
+      const user = await this.getUser({ firstName, lastName, email });
+      if (user) {
+        return user;
+      }
+
+      throw new BadRequestException({ error: 'User not found' });
+    }
+    throw new BadRequestException({ error: 'No access token' });
+  }
+
+  async getUser({
+    firstName,
+    lastName,
+    email,
+  }: SearchUserDto): Promise<User | false> {
+    const url = `${this.url}`;
+    let query = '';
+    if (firstName) {
+      query += `&firstName=${firstName}`;
+    }
+    if (lastName) {
+      query += `&lastName=${lastName}`;
+    }
+    if (email) {
+      query += `&email=${email}`;
+    }
+
+    if (query.length > 0) {
+      query = query.substring(1);
+    }
+
+    const users = await lastValueFrom(
+      this.httpService.get(`${url}?${query}`, this.options),
+    )
       .then(async (res) => res.data)
       .catch((e) => this.error(e));
+
+    if (users && users.length > 0) {
+      const user = users[0];
+      return user;
+    }
+
+    return false;
   }
 
   async setPassword(userId: string, password: string): Promise<void> {
@@ -211,12 +271,18 @@ export class AppService {
   }
 
   error(e: any): any {
+    console.log(e);
     if (e.response) {
       const errorResponse = e.response;
       if (errorResponse.status === 409) {
         throw new ConflictException(errorResponse.data.errorMessage);
       }
+
+      if (errorResponse.data) {
+        throw new BadRequestException(errorResponse.data);
+      }
     }
+
     if (e.getError()) {
       throw new AppException(e.getError());
     }
