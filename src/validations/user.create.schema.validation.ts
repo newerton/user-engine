@@ -62,6 +62,16 @@ export class UserCreateSchema implements CreateSchema {
           return errors;
         })
         .messages(MessagesSchema),
+      emailVerified: Joi.boolean()
+        .required()
+        .label('Email verificado')
+        .error((errors: any) => {
+          errors.forEach((err: any) => {
+            console.log('Validation', err.code, err.local as any);
+          });
+          return errors;
+        })
+        .messages(MessagesSchema),
       deviceToken: Joi.string()
         .label('Device Token')
         .error((errors: any) => {

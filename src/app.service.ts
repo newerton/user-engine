@@ -46,8 +46,14 @@ export class AppService {
   }
 
   async create(userDto: CreateUserDto): Promise<AxiosResponse<User>> {
-    const { firstName, lastName, email, passwordCurrent, deviceToken } =
-      userDto;
+    const {
+      firstName,
+      lastName,
+      email,
+      passwordCurrent,
+      deviceToken,
+      emailVerified = false,
+    } = userDto;
 
     const payload = {
       username: email,
@@ -55,7 +61,7 @@ export class AppService {
       lastName,
       email,
       groups: ['/User'],
-      emailVerified: false,
+      emailVerified,
       enabled: true,
       attributes: {
         locale: ['pt-BR'],
@@ -83,9 +89,12 @@ export class AppService {
               'terms_and_conditions',
               'VERIFY_EMAIL',
             ]);
-            throw new NewUserException(
-              `Olá ${user.firstName}, para efetivar o seu cadastro verifique o seu e-mail ${user.email}.`,
-            );
+            if (!emailVerified) {
+              throw new NewUserException(
+                `Olá ${user.firstName}, para efetivar o seu cadastro verifique o seu e-mail ${user.email}.`,
+              );
+            }
+            return user;
           }
           return res.data;
         })
