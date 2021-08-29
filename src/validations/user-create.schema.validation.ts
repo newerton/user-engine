@@ -31,7 +31,6 @@ export class UserCreateSchema implements CreateSchema {
         .required()
         .min(6)
         .max(30)
-        .required()
         .error((errors: any) => {
           errors.forEach((err: any) => {
             console.log('Validation', err.code, err.local as any);
@@ -40,7 +39,6 @@ export class UserCreateSchema implements CreateSchema {
         })
         .messages(MessagesSchema),
       repeatPasswordCurrent: Joi.string()
-        .required()
         .required()
         .valid(Joi.ref('passwordCurrent'))
         .error((errors: any) => {
@@ -63,7 +61,7 @@ export class UserCreateSchema implements CreateSchema {
         })
         .messages(MessagesSchema),
       emailVerified: Joi.boolean()
-        .required()
+        .default(false)
         .label('Email verificado')
         .error((errors: any) => {
           errors.forEach((err: any) => {

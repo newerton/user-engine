@@ -3,10 +3,8 @@ import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { JoiValidationPipe } from './pipes/JoiValidation.pipe';
-import { UserCreateSchema } from './validations/user.create.schema.validation';
 import { AxiosResponse } from 'axios';
 import { Headers } from './types/headers.types';
-import { UserUpdateSchema } from './validations/user.update.schema.validation';
 import { User } from './schemas/user.schema';
 import { EmailSchema } from './validations/email.schema.validation';
 import { ForgoPasswordDto } from './dtos/forgot-password.dto';
@@ -14,7 +12,9 @@ import { MessageResponse } from './types/messageResponse.types';
 import { PasswordsSchema } from './validations/passwords.schema.validation';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { SearchUserDto } from './dtos/search-user.dto';
-import { UserSearchSchema } from './validations/user.search.schema.validation';
+import { UserCreateSchema } from './validations/user-create.schema.validation';
+import { UserUpdateSchema } from './validations/user-update.schema.validation';
+import { UserSearchSchema } from './validations/user-search.schema.validation';
 
 @Controller()
 export class AppController {
