@@ -15,12 +15,11 @@ import {
 import { ClientProxy } from '@nestjs/microservices';
 import { Auth } from './types/auth.types';
 import { User } from './schemas/user.schema';
-import { decode, JwtPayload, verify } from 'jsonwebtoken';
+import { JwtPayload, verify } from 'jsonwebtoken';
 import { ForgoPasswordDto } from './dtos/forgot-password.dto';
 import { MessageResponse } from './types/messageResponse.types';
 import { ChangePasswordDto } from './dtos/change-password.dto';
 import { SearchUserDto } from './dtos/search-user.dto';
-import { kStringMaxLength } from 'buffer';
 
 @Injectable()
 export class AppService {

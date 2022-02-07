@@ -1,5 +1,10 @@
 import { Controller } from '@nestjs/common';
-import { MessagePattern, Payload } from '@nestjs/microservices';
+import {
+  EventPattern,
+  MessagePattern,
+  Payload,
+  Transport,
+} from '@nestjs/microservices';
 import { AppService } from './app.service';
 import { CreateUserDto } from './dtos/create-user.dto';
 import { JoiValidationPipe } from './pipes/JoiValidation.pipe';
@@ -75,5 +80,11 @@ export class AppController {
   @MessagePattern('users.find_by_id')
   findById(payload: { id: string }): Promise<User> {
     return this.appService.findById(payload);
+  }
+
+  @EventPattern('product_created', Transport.KAFKA)
+  async handleProductCreated(data: Record<string, unknown>) {
+    console.log('product_created');
+    console.log(data);
   }
 }
