@@ -9,6 +9,7 @@ import { AppExceptionFilter } from './filters/app-exception.filter';
 import { KeycloakConnectModule } from 'nest-keycloak-connect';
 import { HttpModule } from '@nestjs/axios';
 import { ClientsModule, Transport } from '@nestjs/microservices';
+import { AllExceptionFilter } from './filters/all-exception.filter';
 
 @Module({
   imports: [
@@ -31,7 +32,7 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
         debug: config.get<string>('keycloak.debug'),
-        authServerUrl: config.get<string>('keycloak.baseUrl'),
+        authServerUrl: config.get<string>('keycloak.baseInternalUrl'),
         realm: config.get<string>('keycloak.realm') as string,
         clientId: config.get<string>('keycloak.clientId'),
         secret: config.get<string>('keycloak.secret') as string,
@@ -44,6 +45,10 @@ import { ClientsModule, Transport } from '@nestjs/microservices';
     {
       provide: APP_FILTER,
       useClass: AppExceptionFilter,
+    },
+    {
+      provide: APP_FILTER,
+      useClass: AllExceptionFilter,
     },
     {
       provide: APP_FILTER,

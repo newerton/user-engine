@@ -29,13 +29,13 @@ export class AppService {
     private configService: ConfigService,
   ) {}
 
-  baseUrl = this.configService.get<string>('keycloak.baseUrl');
+  baseInternalUrl = this.configService.get<string>('keycloak.baseInternalUrl');
   realm = this.configService.get<string>('keycloak.realm');
   certPublicKey = this.configService.get<string>(
     'keycloak.certPublicKey',
   ) as string;
-  url = `${this.baseUrl}/admin/realms/${this.realm}/users`;
-  urlUserInfo = `${this.baseUrl}/realms/${this.realm}/protocol/openid-connect/userinfo`;
+  url = `${this.baseInternalUrl}/admin/realms/${this.realm}/users`;
+  urlUserInfo = `${this.baseInternalUrl}/realms/${this.realm}/protocol/openid-connect/userinfo`;
   options = {
     headers: {} as Headers,
   };
