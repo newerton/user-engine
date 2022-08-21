@@ -102,7 +102,7 @@ export class AppService {
         });
     }
 
-    throw new BadRequestException({ error: 'No access token' });
+    throw new BadRequestException('No access token');
   }
 
   async update(
@@ -145,7 +145,7 @@ export class AppService {
         });
     }
 
-    throw new BadRequestException({ error: 'Access token invalid' });
+    throw new BadRequestException('Access token invalid');
   }
 
   async changePassword(
@@ -163,11 +163,12 @@ export class AppService {
       return await this.setPassword(sub.toString(), passwordCurrent);
     }
 
-    throw new BadRequestException({ error: 'Access token invalid' });
+    throw new BadRequestException('Access token invalid');
   }
 
   async me(headers: Headers): Promise<AxiosResponse<User>> {
     this.options.headers.authorization = headers.authorization;
+
     return await lastValueFrom(
       this.httpService.get(this.urlUserInfo, this.options),
     )
@@ -194,7 +195,7 @@ export class AppService {
       }
     }
 
-    throw new BadRequestException({ error: 'No access token' });
+    throw new BadRequestException('No access token');
   }
 
   async findById({ id }: { id: string }): Promise<User> {
@@ -208,7 +209,7 @@ export class AppService {
           this.error(e);
         });
     }
-    throw new BadRequestException({ error: 'No access token' });
+    throw new BadRequestException('No access token');
   }
 
   async findOne({ firstName, lastName, email }: SearchUserDto): Promise<User> {
@@ -220,9 +221,9 @@ export class AppService {
         return user;
       }
 
-      throw new BadRequestException({ error: 'User not found' });
+      throw new BadRequestException('User not found');
     }
-    throw new BadRequestException({ error: 'No access token' });
+    throw new BadRequestException('No access token');
   }
 
   async getUser({
@@ -279,7 +280,7 @@ export class AppService {
   }
 
   error(e: any): any {
-    console.log(e);
+    console.log('error', e);
     if (e.response) {
       const errorResponse = e.response;
       if (errorResponse.status === 409) {
@@ -301,7 +302,7 @@ export class AppService {
   async getAccessTokenInfo(headers: Headers): Promise<string | JwtPayload> {
     const accessTokenHeader = headers.authorization;
     if (!accessTokenHeader) {
-      throw new BadRequestException({ error: 'No access token' });
+      throw new BadRequestException('No access token');
     }
 
     const [, token] = accessTokenHeader.split(' ');
@@ -309,7 +310,7 @@ export class AppService {
     try {
       return verify(token, this.certPublicKey);
     } catch (err) {
-      throw new BadRequestException({ error: 'Access token invalid' });
+      throw new BadRequestException('Access token invalid');
     }
   }
 
