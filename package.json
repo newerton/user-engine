@@ -28,7 +28,7 @@
     "@nestjs/microservices": "^8.2.6",
     "@nestjs/platform-express": "^8.4.7",
     "joi": "^17.6.0",
-    "jsonwebtoken": "^8.5.1",
+    "jsonwebtoken": "^9.0.0",
     "kafkajs": "^1.15.0",
     "keycloak-connect": "^15.1.1",
     "nest-keycloak-connect": "^1.8.0",
