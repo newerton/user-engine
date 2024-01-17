@@ -24,7 +24,6 @@ export class UserMeUseCase {
   };
 
   async execute(headers: AxiosRequestHeaders): Promise<AxiosResponse<User>> {
-    console.log({ headers });
     this.options.headers['authorization'] = headers['authorization'];
 
     return await lastValueFrom(

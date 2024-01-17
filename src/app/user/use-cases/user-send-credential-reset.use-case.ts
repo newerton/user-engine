@@ -1,14 +1,15 @@
 import { HttpService } from '@nestjs/axios';
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { AxiosResponse } from 'axios';
 import { lastValueFrom } from 'rxjs';
 
-import { AuthCredentialsUseCase } from '@app/auth/use-cases/auth-credentials.use-case';
-import { KeycloakUseCaseException } from '@core/@shared/infrastructure/adapter/identify-and-access/keycloak/exception/keycloak-error.exception';
+import { AuthCredentialsUseCase } from '@app/auth/use-cases';
 
 @Injectable()
 export class UserSendCredentialResetUseCase {
+  logger = new Logger(UserSendCredentialResetUseCase.name);
+
   constructor(
     private httpService: HttpService,
     private configService: ConfigService,
@@ -28,14 +29,17 @@ export class UserSendCredentialResetUseCase {
     const { access_token } = await lastValueFrom(
       this.authCredentialsUseCase.execute(),
     );
-    return await lastValueFrom(
-      this.httpService.put(url, actions, {
-        headers: {
-          authorization: `Bearer ${access_token}`,
-        },
-      }),
-    )
-      .then(async (res) => res.data)
-      .catch((e) => new KeycloakUseCaseException(e));
+
+    return (
+      this.httpService.axiosRef
+        .put(url, actions, {
+          headers: {
+            authorization: `Bearer ${access_token}`,
+          },
+        })
+        .then((response) => response.data)
+        // .catch((e) => new KeycloakUseCaseException(e))
+        .catch(() => this.logger.error('E-mail not sent to user'))
+    );
   }
 }

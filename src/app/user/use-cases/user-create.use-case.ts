@@ -32,9 +32,6 @@ export class UserCreateUseCase {
     'keycloak.certPublicKey',
   ) as string;
   url = `${this.baseInternalUrl}/admin/realms/${this.realm}/users`;
-  options = {
-    headers: {},
-  };
 
   async execute(userDto: UserCreateInput): Promise<AxiosResponse<User>> {
     const {
@@ -70,13 +67,12 @@ export class UserCreateUseCase {
     );
 
     if (access_token) {
-      return await lastValueFrom(
-        this.httpService.post(this.url, payload, {
+      return this.httpService.axiosRef
+        .post(this.url, payload, {
           headers: {
             authorization: `Bearer ${access_token}`,
           },
-        }),
-      )
+        })
         .then(async (res) => {
           const user = await this.userGetUserUseCase.execute({ email });
           if (user) {

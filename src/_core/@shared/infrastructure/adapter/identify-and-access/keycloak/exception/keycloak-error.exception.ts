@@ -24,10 +24,10 @@ export class KeycloakUseCaseException {
       }
     }
 
-    if (this.error.getError()) {
+    if (this.error.message) {
       throw Exception.new({
         code: Code.BAD_REQUEST.code,
-        overrideMessage: this.error.getError(),
+        overrideMessage: this.error.message,
       });
     }
 
