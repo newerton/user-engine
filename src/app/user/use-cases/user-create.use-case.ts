@@ -88,7 +88,7 @@ export class UserCreateUseCase {
 
             if (!emailVerified) {
               throw Exception.new({
-                code: Code.BAD_REQUEST,
+                code: Code.BAD_REQUEST.code,
                 overrideMessage: `Olá ${user.firstName}, para efetivar o seu cadastro verifique o seu e-mail ${user.email}.`,
               });
             }
@@ -102,7 +102,7 @@ export class UserCreateUseCase {
     }
 
     throw Exception.new({
-      code: Code.BAD_REQUEST,
+      code: Code.BAD_REQUEST.code,
       overrideMessage: 'No access token',
     });
   }

@@ -34,12 +34,12 @@ export class UserFindOneUseCase {
         return user;
       }
       throw Exception.new({
-        code: Code.BAD_REQUEST,
+        code: Code.BAD_REQUEST.code,
         overrideMessage: 'User not found',
       });
     }
     throw Exception.new({
-      code: Code.BAD_REQUEST,
+      code: Code.BAD_REQUEST.code,
       overrideMessage: 'No access token',
     });
   }

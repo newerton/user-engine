@@ -7,10 +7,10 @@ dotenv.config({
 const env = from(process.env, { logger });
 
 export class KafkaServerConfig {
-  public static readonly KAFKA_BROKER_HOST: string =
+  public static readonly BROKER_HOST: string =
     this.envRequiredAsString('KAFKA_BROKER_HOST');
 
-  public static readonly KAFKA_BROKER_PORT: number =
+  public static readonly BROKER_PORT: number =
     this.envRequiredAsPortNumber('KAFKA_BROKER_PORT');
 
   private static envRequiredAsString(key): string {

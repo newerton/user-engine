@@ -2,14 +2,14 @@ import { Controller } from '@nestjs/common';
 import { UseFilters } from '@nestjs/common/decorators';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
-import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter/rpc-exception.filter';
-import { JoiValidationPipe } from '@app/@common/application/pipes/joi-validation.pipe';
+import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
 import {
   UserForgotPasswordInput,
   UserForgotPasswordOutput,
-} from '@app/user/dtos/user-forgot-password.dto';
-import { UserForgotPasswordUseCase } from '@app/user/use-cases/user-forgot-password.use-case';
-import { UserEmailSchemaValidation } from '@app/user/validations/user-email-schema.validation';
+} from '@app/user/dtos';
+import { UserForgotPasswordUseCase } from '@app/user/use-cases';
+import { UserEmailSchemaValidation } from '@app/user/validations';
 
 @Controller()
 @UseFilters(new RemoteProcedureCallExceptionFilter())
@@ -18,7 +18,7 @@ export class UserForgotPasswordController {
 
   @MessagePattern('users.forgot_password')
   execute(
-    @Payload('payload', new JoiValidationPipe(new UserEmailSchemaValidation()))
+    @Payload('payload', new ZodValidationPipe(new UserEmailSchemaValidation()))
     payload: UserForgotPasswordInput,
   ): Promise<UserForgotPasswordOutput> {
     return this.useCase.execute(payload);

@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 
-import { ApiServerConfig } from '@core/@shared/infrastructure/config/env/api-server.config';
+import { ApiServerConfig } from '@core/@shared/infrastructure/config/env';
 
-import { AuthCredentialsUseCase } from './use-cases/auth-credentials.use-case';
+import { AuthCredentialsUseCase } from './use-cases';
 
 @Module({
   imports: [

@@ -1,24 +1,18 @@
-import * as JoiBase from 'joi';
+import { z } from 'zod';
 
-import { CreateSchema } from '@app/@common/application/validators/joi/schemas/joi.create-schema.interface';
-import joiMessagesSchema from '@app/@common/application/validators/joi/schemas/joi.messages.schema';
+import { CreateValidationSchema } from '@app/@common/application/validators/zod/schemas';
 
-const Joi = JoiBase;
-
-export class UserEmailSchemaValidation implements CreateSchema {
-  createSchema(): JoiBase.ObjectSchema {
-    return Joi.object({
-      email: Joi.string()
-        .email()
-        .lowercase()
-        .label('E-mail')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
+export class UserEmailSchemaValidation implements CreateValidationSchema {
+  createSchema(): z.ZodSchema {
+    return z.object({
+      email: z
+        .string({
+          description: 'E-mail',
+          required_error: 'E-mail is required',
+          invalid_type_error: 'E-mail must be a string',
         })
-        .messages(joiMessagesSchema),
+        .toLowerCase()
+        .email(),
     });
   }
 }

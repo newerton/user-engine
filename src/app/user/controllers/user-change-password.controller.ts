@@ -3,11 +3,12 @@ import { UseFilters } from '@nestjs/common/decorators';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AxiosRequestHeaders } from 'axios';
 
-import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter/rpc-exception.filter';
-import { JoiValidationPipe } from '@app/@common/application/pipes/joi-validation.pipe';
-import { UserChangePasswordInput } from '@app/user/dtos/user-change-password.dto';
-import { UserChangePasswordUseCase } from '@app/user/use-cases/user-change-password.use-case';
-import { UserPasswordSchemaValidation } from '@app/user/validations/user-password-schema..validation';
+import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
+import { UserChangePasswordInput } from '@app/user/dtos';
+import { UserChangePasswordUseCase } from '@app/user/use-cases';
+
+import { UserPasswordSchemaValidation } from '../validations';
 
 @Controller()
 @UseFilters(new RemoteProcedureCallExceptionFilter())
@@ -18,7 +19,7 @@ export class UserChangePasswordController {
   async execute(
     @Payload(
       'payload',
-      new JoiValidationPipe(new UserPasswordSchemaValidation()),
+      new ZodValidationPipe(new UserPasswordSchemaValidation()),
     )
     payload: UserChangePasswordInput,
     @Payload('headers')

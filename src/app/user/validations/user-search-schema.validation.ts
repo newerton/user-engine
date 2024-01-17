@@ -1,42 +1,28 @@
-import * as JoiBase from 'joi';
+import { z } from 'zod';
 
-import { CreateSchema } from '@app/@common/application/validators/joi/schemas/joi.create-schema.interface';
-import joiMessagesSchema from '@app/@common/application/validators/joi/schemas/joi.messages.schema';
+import { CreateValidationSchema } from '@app/@common/application/validators/zod/schemas';
 
-const Joi = JoiBase;
-
-export class UserrSearchSchemaValidation implements CreateSchema {
-  createSchema(): JoiBase.ObjectSchema {
-    return Joi.object({
-      firstName: Joi.string()
-        .label('Primeiro nome')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
+export class UserrSearchSchemaValidation implements CreateValidationSchema {
+  createSchema(): z.ZodSchema {
+    return z.object({
+      firstName: z.string({
+        description: 'First name',
+        required_error: 'First name is required',
+        invalid_type_error: 'First name must be a string',
+      }),
+      lastName: z.string({
+        description: 'Last name',
+        required_error: 'Last name is required',
+        invalid_type_error: 'Last name must be a string',
+      }),
+      email: z
+        .string({
+          description: 'E-mail',
+          required_error: 'E-mail is required',
+          invalid_type_error: 'E-mail must be a string',
         })
-        .messages(joiMessagesSchema),
-      lastName: Joi.string()
-        .label('Sobrenome')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
-        })
-        .messages(joiMessagesSchema),
-      email: Joi.string()
-        .email()
-        .lowercase()
-        .label('E-mail')
-        .error((errors: any) => {
-          errors.forEach((err: any) => {
-            console.log('Validation', err.code, err.local as any);
-          });
-          return errors;
-        })
-        .messages(joiMessagesSchema),
+        .toLowerCase()
+        .email(),
     });
   }
 }

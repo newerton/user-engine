@@ -3,12 +3,12 @@ import { UseFilters } from '@nestjs/common/decorators';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 import { AxiosRequestHeaders, AxiosResponse } from 'axios';
 
-import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter/rpc-exception.filter';
-import { JoiValidationPipe } from '@app/@common/application/pipes/joi-validation.pipe';
-import { UserCreateInput } from '@app/user/dtos/user-create.dto';
-import { User } from '@app/user/schemas/user.schema';
-import { UserUpdateUseCase } from '@app/user/use-cases/user-update.use-case';
-import { UserUpdateSchemaValidation } from '@app/user/validations/user-update-schema.validation';
+import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
+import { UserCreateInput } from '@app/user/dtos';
+import { User } from '@app/user/schemas';
+import { UserUpdateUseCase } from '@app/user/use-cases';
+import { UserUpdateSchemaValidation } from '@app/user/validations';
 
 @Controller()
 @UseFilters(new RemoteProcedureCallExceptionFilter())
@@ -17,7 +17,7 @@ export class UserUpdateController {
 
   @MessagePattern('users.update')
   async execute(
-    @Payload('payload', new JoiValidationPipe(new UserUpdateSchemaValidation()))
+    @Payload('payload', new ZodValidationPipe(new UserUpdateSchemaValidation()))
     payload: UserCreateInput,
     @Payload('headers')
     headers: AxiosRequestHeaders,

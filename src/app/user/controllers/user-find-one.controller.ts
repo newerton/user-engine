@@ -2,12 +2,12 @@ import { Controller } from '@nestjs/common';
 import { UseFilters } from '@nestjs/common/decorators';
 import { MessagePattern, Payload } from '@nestjs/microservices';
 
-import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter/rpc-exception.filter';
-import { JoiValidationPipe } from '@app/@common/application/pipes/joi-validation.pipe';
-import { UserSearchInput } from '@app/user/dtos/user-search.dto';
-import { User } from '@app/user/schemas/user.schema';
-import { UserFindOneUseCase } from '@app/user/use-cases/user-find-one.use-case';
-import { UserrSearchSchemaValidation } from '@app/user/validations/user-search-schema.validation';
+import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
+import { UserSearchInput } from '@app/user/dtos';
+import { User } from '@app/user/schemas';
+import { UserFindOneUseCase } from '@app/user/use-cases';
+import { UserrSearchSchemaValidation } from '@app/user/validations';
 
 @Controller()
 @UseFilters(new RemoteProcedureCallExceptionFilter())
@@ -16,7 +16,7 @@ export class UserFindOneController {
 
   @MessagePattern('users.find_one')
   findOne(
-    @Payload(new JoiValidationPipe(new UserrSearchSchemaValidation()))
+    @Payload(new ZodValidationPipe(new UserrSearchSchemaValidation()))
     payload: UserSearchInput,
   ): Promise<User> {
     return this.useCase.execute(payload);

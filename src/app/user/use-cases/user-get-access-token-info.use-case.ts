@@ -17,7 +17,7 @@ export class UserGetAccessTokenInfoUseCase {
     const accessTokenHeader = headers.authorization;
     if (!accessTokenHeader) {
       throw Exception.new({
-        code: Code.BAD_REQUEST,
+        code: Code.BAD_REQUEST.code,
         overrideMessage: 'Not access token',
       });
     }
@@ -28,7 +28,7 @@ export class UserGetAccessTokenInfoUseCase {
       return verify(token, this.certPublicKey);
     } catch (err) {
       throw Exception.new({
-        code: Code.BAD_REQUEST,
+        code: Code.BAD_REQUEST.code,
         overrideMessage: 'Access token invalid',
       });
     }

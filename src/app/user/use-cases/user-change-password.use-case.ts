@@ -42,7 +42,7 @@ export class UserChangePasswordUseCase {
     }
 
     throw Exception.new({
-      code: Code.BAD_REQUEST,
+      code: Code.BAD_REQUEST.code,
       overrideMessage: 'Access token invalid',
     });
   }

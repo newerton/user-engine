@@ -75,7 +75,7 @@ export class UserUpdateUseCase {
     }
 
     throw Exception.new({
-      code: Code.BAD_REQUEST,
+      code: Code.BAD_REQUEST.code,
       overrideMessage: 'Access token invalid',
     });
   }
