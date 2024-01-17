@@ -30,6 +30,7 @@ async function bootstrap() {
       port: ApiServerConfig.PORT,
     },
   });
+
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.KAFKA,
     options: {

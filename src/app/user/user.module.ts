@@ -1,10 +1,12 @@
 import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
 import { KeycloakConnectModule } from 'nest-keycloak-connect';
 
 import keycloakConfig from '@app/@common/infrastructure/config/keycloak.config';
 import { AuthModule } from '@app/auth/auth.module';
+import { KafkaServerConfig } from '@core/@shared/infrastructure/config/env';
 
 import {
   UserChangePasswordController,
@@ -31,11 +33,25 @@ import {
 
 @Module({
   imports: [
-    HttpModule,
     ConfigModule.forRoot({
       isGlobal: true,
       load: [keycloakConfig],
     }),
+    HttpModule,
+    ClientsModule.register([
+      {
+        name: 'NOTIFICATION_SERVICE_KAFKA',
+        transport: Transport.KAFKA,
+        options: {
+          client: {
+            clientId: 'notification',
+            brokers: [
+              `${KafkaServerConfig.BROKER_HOST}:${KafkaServerConfig.BROKER_PORT}`,
+            ],
+          },
+        },
+      },
+    ]),
     KeycloakConnectModule.registerAsync({
       inject: [ConfigService],
       useFactory: (config: ConfigService) => ({
