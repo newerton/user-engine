@@ -45,9 +45,7 @@ import {
         options: {
           client: {
             clientId: 'notification',
-            brokers: [
-              `${KafkaServerConfig.BROKER_HOST}:${KafkaServerConfig.BROKER_PORT}`,
-            ],
+            brokers: KafkaServerConfig.brokers(),
           },
         },
       },

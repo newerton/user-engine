@@ -35,9 +35,7 @@ async function bootstrap() {
     transport: Transport.KAFKA,
     options: {
       client: {
-        brokers: [
-          `${KafkaServerConfig.BROKER_HOST}:${KafkaServerConfig.BROKER_PORT}`,
-        ],
+        brokers: KafkaServerConfig.brokers(),
       },
       consumer: {
         groupId: 'user-consumer',
