@@ -1,7 +1,7 @@
 export class UserForgotPasswordInput {
-  email: string;
+	email: string;
 }
 
 export class UserForgotPasswordOutput {
-  message: string;
+	message: string;
 }

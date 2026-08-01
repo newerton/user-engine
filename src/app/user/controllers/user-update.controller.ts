@@ -1,14 +1,13 @@
+import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter';
+import { ZodValidationPipe } from '@app/@common/application/pipes';
+import type { UserCreateInput } from '@app/user/dtos';
+import type { User } from '@app/user/schemas';
+import type { UserUpdateUseCase } from '@app/user/use-cases';
+import { UserUpdateSchemaValidation } from '@app/user/validations';
 import { Controller } from '@nestjs/common';
 import { UseFilters } from '@nestjs/common/decorators';
 import { MessagePattern, Payload } from '@nestjs/microservices';
-import { AxiosRequestHeaders, AxiosResponse } from 'axios';
-
-import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter';
-import { ZodValidationPipe } from '@app/@common/application/pipes';
-import { UserCreateInput } from '@app/user/dtos';
-import { User } from '@app/user/schemas';
-import { UserUpdateUseCase } from '@app/user/use-cases';
-import { UserUpdateSchemaValidation } from '@app/user/validations';
+import type { AxiosRequestHeaders, AxiosResponse } from 'axios';
 
 @Controller()
 @UseFilters(new RemoteProcedureCallExceptionFilter())

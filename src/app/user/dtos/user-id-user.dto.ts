@@ -1,3 +1,3 @@
 export class UserIdUserInput {
-  id: string;
+	id: string;
 }

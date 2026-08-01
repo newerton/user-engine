@@ -1,4 +1,4 @@
 export class UserChangePasswordInput {
-  passwordCurrent: string;
-  repeatPasswordCurrent: string;
+	passwordCurrent: string;
+	repeatPasswordCurrent: string;
 }

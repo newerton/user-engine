@@ -1,24 +1,24 @@
-import { ValidationPipe } from '@nestjs/common';
-import { Test, TestingModule } from '@nestjs/testing';
+import { ValidationPipe } from "@nestjs/common";
+import { Test, type TestingModule } from "@nestjs/testing";
 
-import { MainModule } from 'src/main.module';
+import { MainModule } from "src/main.module";
 
 export async function createNestApplication({
-  onBeforeInit,
+	onBeforeInit,
 }: {
-  onBeforeInit: (moduleRef: TestingModule) => void;
+	onBeforeInit: (moduleRef: TestingModule) => void;
 }) {
-  const moduleRef = await Test.createTestingModule({
-    imports: [MainModule],
-  }).compile();
+	const moduleRef = await Test.createTestingModule({
+		imports: [MainModule],
+	}).compile();
 
-  const app = moduleRef.createNestApplication();
+	const app = moduleRef.createNestApplication();
 
-  app.useGlobalPipes(new ValidationPipe());
+	app.useGlobalPipes(new ValidationPipe());
 
-  onBeforeInit(moduleRef);
+	onBeforeInit(moduleRef);
 
-  await app.init();
+	await app.init();
 
-  return app;
+	return app;
 }

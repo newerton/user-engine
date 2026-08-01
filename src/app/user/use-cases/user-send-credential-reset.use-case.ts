@@ -1,11 +1,11 @@
 import { Inject, Injectable } from '@nestjs/common';
-import { ClientKafka } from '@nestjs/microservices';
+import type { ClientKafka } from '@nestjs/microservices';
 
 @Injectable()
 export class UserSendCredentialResetUseCase {
   constructor(
     @Inject('NOTIFICATION_SERVICE_KAFKA')
-    private readonly clientKafka: ClientKafka,
+    private readonly _clientKafka: ClientKafka,
   ) {}
 
   execute(userId: string, actions: Array<string>): void {

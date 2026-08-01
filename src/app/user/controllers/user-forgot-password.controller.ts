@@ -1,15 +1,14 @@
-import { Controller } from '@nestjs/common';
-import { UseFilters } from '@nestjs/common/decorators';
-import { MessagePattern, Payload } from '@nestjs/microservices';
-
 import { RemoteProcedureCallExceptionFilter } from '@app/@common/application/exceptions/filter';
 import { ZodValidationPipe } from '@app/@common/application/pipes';
-import {
+import type {
   UserForgotPasswordInput,
   UserForgotPasswordOutput,
 } from '@app/user/dtos';
-import { UserForgotPasswordUseCase } from '@app/user/use-cases';
+import type { UserForgotPasswordUseCase } from '@app/user/use-cases';
 import { UserEmailSchemaValidation } from '@app/user/validations';
+import { Controller } from '@nestjs/common';
+import { UseFilters } from '@nestjs/common/decorators';
+import { MessagePattern, Payload } from '@nestjs/microservices';
 
 @Controller()
 @UseFilters(new RemoteProcedureCallExceptionFilter())

@@ -1,1 +1,1 @@
-export * from './create-schema.interface';
+export * from "./create-schema.interface";

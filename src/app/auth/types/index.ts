@@ -1,1 +1,1 @@
-export * from './auth-credentials.type';
+export * from "./auth-credentials.type";

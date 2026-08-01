@@ -1,36 +1,35 @@
-import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
-import { JwtPayload, verify } from 'jsonwebtoken';
-
-import { Code } from '@core/@shared/domain/error/Code';
-import { Exception } from '@core/@shared/domain/exception/Exception';
+import { Code } from "@core/@shared/domain/error/Code";
+import { Exception } from "@core/@shared/domain/exception/Exception";
+import { Injectable } from "@nestjs/common";
+import type { ConfigService } from "@nestjs/config";
+import { type JwtPayload, verify } from "jsonwebtoken";
 
 @Injectable()
 export class UserGetAccessTokenInfoUseCase {
-  constructor(private configService: ConfigService) {}
+	constructor(private configService: ConfigService) {}
 
-  certPublicKey = this.configService.get<string>(
-    'keycloak.certPublicKey',
-  ) as string;
+	certPublicKey = this.configService.get<string>(
+		"keycloak.certPublicKey",
+	) as string;
 
-  async execute(headers: any): Promise<string | JwtPayload> {
-    const accessTokenHeader = headers.authorization;
-    if (!accessTokenHeader) {
-      throw Exception.new({
-        code: Code.BAD_REQUEST.code,
-        overrideMessage: 'Not access token',
-      });
-    }
+	async execute(headers: any): Promise<string | JwtPayload> {
+		const accessTokenHeader = headers.authorization;
+		if (!accessTokenHeader) {
+			throw Exception.new({
+				code: Code.BAD_REQUEST.code,
+				overrideMessage: "Not access token",
+			});
+		}
 
-    const [, token] = accessTokenHeader.split(' ');
+		const [, token] = accessTokenHeader.split(" ");
 
-    try {
-      return verify(token, this.certPublicKey);
-    } catch (err) {
-      throw Exception.new({
-        code: Code.BAD_REQUEST.code,
-        overrideMessage: 'Access token invalid',
-      });
-    }
-  }
+		try {
+			return verify(token, this.certPublicKey);
+		} catch (_err) {
+			throw Exception.new({
+				code: Code.BAD_REQUEST.code,
+				overrideMessage: "Access token invalid",
+			});
+		}
+	}
 }
