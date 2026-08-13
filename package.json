@@ -70,9 +70,10 @@
 		"brace-expansion": "^5.0.9",
 		"diff": "^4.0.4",
 		"elliptic": "npm:@mapped/elliptic@^6.6.4",
-		"js-yaml": "^4.3.0",
+		"js-yaml": "^5.2.3",
 		"multer": "^2.1.2",
-		"piscina": "^4.9.3"
+		"piscina": "^4.9.3",
+		"extract-zip": "^2.0.1"
 	},
 	"allowScripts": {
 		"chromedriver@140.0.0": true,
