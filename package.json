@@ -21,11 +21,11 @@
 	},
 	"dependencies": {
 		"@nestjs/axios": "4.0.1",
-		"@nestjs/common": "11.1.29",
+		"@nestjs/common": "11.2.1",
 		"@nestjs/config": "4.0.4",
 		"@nestjs/mapped-types": "2.1.1",
-		"@nestjs/microservices": "11.1.29",
-		"@nestjs/platform-express": "11.1.29",
+		"@nestjs/microservices": "11.2.1",
+		"@nestjs/platform-express": "11.2.1",
 		"env-var": "7.5.0",
 		"jsonwebtoken": "9.0.3",
 		"kafkajs": "2.2.4",
@@ -41,9 +41,9 @@
 		"@commitlint/config-conventional": "21.2.2",
 		"@nestjs/cli": "11.0.24",
 		"@nestjs/schematics": "11.1.0",
-		"@nestjs/testing": "11.1.29",
+		"@nestjs/testing": "11.2.1",
 		"@swc/cli": "0.8.1",
-		"@swc/core": "1.15.47",
+		"@swc/core": "1.16.0",
 		"@swc/jest": "0.2.39",
 		"@types/express": "5.0.6",
 		"@types/jest": "30.0.0",
@@ -62,7 +62,7 @@
 	},
 	"overrides": {
 		"nest-keycloak-connect": {
-			"@nestjs/common": "11.1.29",
+			"@nestjs/common": "11.2.1",
 			"@nestjs/core": "11.1.27",
 			"rxjs": "^7.8.2"
 		},
