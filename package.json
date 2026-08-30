@@ -33,10 +33,10 @@
 		"lightship": "9.0.4",
 		"nest-keycloak-connect": "1.10.1",
 		"rxjs": "7.8.2",
-		"zod": "4.4.3"
+		"zod": "4.5.4"
 	},
 	"devDependencies": {
-		"@biomejs/biome": "2.5.10",
+		"@biomejs/biome": "2.5.11",
 		"@commitlint/cli": "21.2.2",
 		"@commitlint/config-conventional": "21.2.2",
 		"@nestjs/cli": "11.0.24",
@@ -48,10 +48,10 @@
 		"@types/express": "5.0.6",
 		"@types/jest": "30.0.0",
 		"@types/jsonwebtoken": "9.0.10",
-		"@types/node": "26.3.0",
+		"@types/node": "26.4.0",
 		"@types/supertest": "7.2.1",
 		"husky": "9.1.7",
-		"jest": "30.4.2",
+		"jest": "30.5.0",
 		"prettier": "3.9.6",
 		"supertest": "7.2.2",
 		"ts-jest": "29.4.12",
