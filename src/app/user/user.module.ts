@@ -3,9 +3,8 @@ import { AuthModule } from "@app/auth/auth.module";
 import { KafkaServerConfig } from "@core/@shared/infrastructure/config/env";
 import { HttpModule } from "@nestjs/axios";
 import { Module } from "@nestjs/common";
-import { ConfigModule, ConfigService } from "@nestjs/config";
+import { ConfigModule } from "@nestjs/config";
 import { ClientsModule, Transport } from "@nestjs/microservices";
-import { KeycloakConnectModule } from "nest-keycloak-connect";
 
 import {
 	UserChangePasswordController,
@@ -49,16 +48,6 @@ import {
 				},
 			},
 		]),
-		KeycloakConnectModule.registerAsync({
-			inject: [ConfigService],
-			useFactory: (config: ConfigService) => ({
-				debug: config.get<string>("keycloak.debug"),
-				authServerUrl: config.get<string>("keycloak.baseInternalUrl"),
-				realm: config.get<string>("keycloak.realm") as string,
-				clientId: config.get<string>("keycloak.clientId"),
-				secret: config.get<string>("keycloak.secret") as string,
-			}),
-		}),
 		AuthModule,
 	],
 	controllers: [

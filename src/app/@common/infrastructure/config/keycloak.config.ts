@@ -1,5 +1,4 @@
 import { KeycloakServerConfig } from "@core/@shared/infrastructure/config/env/keycloak-server.config";
-import { PolicyEnforcementMode, TokenValidation } from "nest-keycloak-connect";
 
 export default () => ({
 	keycloak: {
@@ -11,8 +10,6 @@ export default () => ({
 		secret: KeycloakServerConfig.API_GATEWAY_SECRET,
 		publicKey: KeycloakServerConfig.PUBLIC_KEY,
 		certPublicKey: `-----BEGIN PUBLIC KEY-----\n${KeycloakServerConfig.PUBLIC_KEY}\n-----END PUBLIC KEY-----`,
-		policyEnforcement: PolicyEnforcementMode.ENFORCING,
-		tokenValidation: TokenValidation.OFFLINE,
 		logLevels: ["log", "debug", "error", "verbose", "warn"],
 		useNestLogger: false,
 		user_credentials: {
