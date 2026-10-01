@@ -67,7 +67,7 @@
 		"elliptic": "npm:@mapped/elliptic@^6.6.4",
 		"js-yaml": "^5.4.2",
 		"multer": "^2.4.0",
-		"piscina": "^4.9.3",
+		"piscina": "^4.9.4",
 		"extract-zip": "^2.0.1"
 	},
 	"allowScripts": {
